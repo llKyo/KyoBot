@@ -1,10 +1,14 @@
 import dotenv from "dotenv"
+import moment from "moment"
 
 import { iniciarBot } from "./bot.js"
 
 dotenv.config()
+moment.locale("es-mx")
 
-const BOT_TOKEN = process.env.BOT_TOKEN
+console.clear()
 
 
-iniciarBot(BOT_TOKEN);
+process.env.ROOT = process.cwd()
+
+iniciarBot()
