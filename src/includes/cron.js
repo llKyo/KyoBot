@@ -22,7 +22,7 @@ export const cargarCrons = (bot) => {
     }
 
     // 0 9 * * *
-    nodeCron.schedule("0 9 * * *", () => {
+    nodeCron.schedule("10 9 * * *", () => {
         usuarioCron.message.text = "/zoom"
         zoom(bot, usuarioCron)
     })
