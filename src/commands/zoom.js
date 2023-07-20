@@ -74,25 +74,30 @@ export const zoom = (bot, ctx) => {
 
         const aCompara = compararIps(aIpsZoom, ULT_IPS_ZOOM)
 
-        let mensaje = "Resultado IPs Zoom:"
+        let mensaje = "Resultado IPs Zoom:\n\n"
+
+        mensaje += "Ips de Respaldo:\n"
+        ULT_IPS_ZOOM.forEach(ip => {
+            mensaje += `${ip}\n`;
+        })
         
         if (aCompara.aIpsRespNoEnc.length != 0) {
-            mensaje += "\n\n⚠️ - Se encontraron IPs que ya no son válidas:"
+            mensaje += "\n⚠️ - Se encontraron IPs que ya no son válidas:"
             aCompara.aIpsRespNoEnc.forEach((ip) => {
                 mensaje += `\n${ip}`
             })
         } else {
-            mensaje += "\n\n✅ - Todas las IPs siguen vigentes"
+            mensaje += "\n✅ - Todas las IPs siguen vigentes"
         }
 
         
         if (aCompara.aIpsZoomNoEnc.length != 0) {
-            mensaje += "\n\n⚠️ - Se encontraron IPs nuevas"
+            mensaje += "\n⚠️ - Se encontraron IPs nuevas"
             aCompara.aIpsZoomNoEnc.forEach((ip) => {
                 mensaje += `\n${ip}`
             })
         } else {
-            mensaje += "\n\n✅ - No se encontraron nuevas IPs"
+            mensaje += "\n✅ - No se encontraron nuevas IPs"
             
         }
 

@@ -36,10 +36,10 @@ export const start = (bot, ctx) => {
             msjMaster += `Username: ${username}`
 
             bot.telegram.sendMessage(USER_MASTER, msjMaster)
-            bot.telegram.sendMessage(ctx.chat.id, `Hi there ${name} 😁`)
+            bot.telegram.sendMessage(ctx.chat.id, `Hi there ${name} 😁\n\nEn caso de ayuda utilizar comando /help`)
             bot.telegram.sendMessage(ctx.chat.id, `👋`)
         } else {
-            bot.telegram.sendMessage(ctx.chat.id, `Hi there denuevo ${name} 🙃`)
+            bot.telegram.sendMessage(ctx.chat.id, `Hi there denuevo ${name} 🙃\n\nRecordar comando /help para ayuda`)
             bot.telegram.sendMessage(ctx.chat.id, "😁")
 
         }
