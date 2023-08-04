@@ -22,9 +22,12 @@ export const cargarCrons = (bot) => {
     }
 
     // 0 9 * * *
-    nodeCron.schedule("10 9 * * *", () => {
+    nodeCron.schedule("0 9 * * *", () => {
+
+        const destinatariosCron = [USER_MASTER];
+
         usuarioCron.message.text = "/zoom"
-        zoom(bot, usuarioCron)
+        zoom(bot, usuarioCron, true, destinatariosCron);
     })
 
 }

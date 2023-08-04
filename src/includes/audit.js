@@ -32,8 +32,9 @@ const generarLogCSV = (now, id, name, username, mensaje) => {
 const generarLogDB = (id, name, username, mensaje) => {
 
     const ROOT_PATH = process.env.ROOT
+    const DATABASE = process.env.DATABASE;
 
-    const rutaDB = path.join(ROOT_PATH, "database", "test.db")
+    const rutaDB = path.join(ROOT_PATH, "database", DATABASE);
     const db = new sqlite3.Database(rutaDB)
 
     const qInsert = "INSERT INTO LOG_CONSULTA"

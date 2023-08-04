@@ -1,46 +1,45 @@
-import sqlite3 from "sqlite3"
-import path from "path"
-
 import { generarLog } from "../includes/audit.js"
+import { Usuario } from "../../database/classes/Usuario.js";
+import { conexionDB } from "../includes/sqlite3.js";
 
 export const start = (bot, ctx) => {
     generarLog(ctx)
 
-    const USER_MASTER = process.env.USER_MASTER
-    const ROOT_PATH = process.env.ROOT
-    const rutaDB = path.join(ROOT_PATH, "database", "test.db")
+    const USER_MASTER = process.env.USER_MASTER;
 
-    const id = ctx.from.id
-    const name = ctx.from.first_name
-    const username = ctx.from.username
+    const db = conexionDB()
 
-    const db = new sqlite3.Database(rutaDB)
+    const usuario = new Usuario()
+    usuario.id          = ctx.from.id;
+    usuario.first_name  = ctx.from.first_name;
+    usuario.username    = ctx.from.username;
 
-    let qUuarioC = `SELECT COUNT(1) FROM USUARIO `
-    qUuarioC += `WHERE ID = ${id}`
-
-    db.all(qUuarioC, (err, data) => {
+    db.all(usuario.siExiste(), (err, data) => {
         if (err) return
 
-        const count = data[0]["COUNT(1)"]
-
-        if (count == 0) {
-            let values = ` ${id}, '${name}', '${username}', ${id}`
-            let qUsuarioI = `INSERT INTO USUARIO (ID, NAME, USERNAME, R_USUARIO) VALUES (${values})`
-
-            db.all(qUsuarioI)
+        if (data[0]["COUNT(1)"] == 0) {
+            db.all(usuario.registrar())
 
             let msjMaster = `🆕 Nuevo Usuario:\n\n`
-            msjMaster += `Id: ${id}\n`
-            msjMaster += `Nombre: ${name}\n`
-            msjMaster += `Username: ${username}`
+            msjMaster += `Id: ${usuario.id}\n`;
+            msjMaster += `Nombre: ${usuario.first_name}\n`;
+            msjMaster += `Username: ${usuario.username}`;
 
             bot.telegram.sendMessage(USER_MASTER, msjMaster)
-            bot.telegram.sendMessage(ctx.chat.id, `Hi there ${name} 😁\n\nEn caso de ayuda utilizar comando /help`)
-            bot.telegram.sendMessage(ctx.chat.id, `👋`)
+
+            bot.telegram.sendMessage(
+              usuario.id,
+              `Hi there ${usuario.first_name} 😁\n\nEn caso de ayuda utilizar comando /help`
+            )
+
+            bot.telegram.sendMessage(usuario.id, `👋`)
         } else {
-            bot.telegram.sendMessage(ctx.chat.id, `Hi there denuevo ${name} 🙃\n\nRecordar comando /help para ayuda`)
-            bot.telegram.sendMessage(ctx.chat.id, "😁")
+            bot.telegram.sendMessage(
+              usuario.id,
+              `Hi there denuevo ${usuario.first_name} 🙃\n\nRecordar comando /help para ayuda`
+            );
+
+            bot.telegram.sendMessage(usuario.id, "😁");
 
         }
     })

@@ -53,7 +53,7 @@ const compararIps = (aIpsZoom, aIpsRespaldo) => {
     return aCompara
 }
   
-export const zoom = (bot, ctx) => {
+export const zoom = (bot, ctx, cron = false, destinatariosCron = []) => {
 
     generarLog(ctx)
 
@@ -63,7 +63,7 @@ export const zoom = (bot, ctx) => {
 
     const idUsuario = ctx.chat.id
 
-    if (ULT_IPS_ZOOM.length == 0) {
+    if (!cron && ULT_IPS_ZOOM.length == 0) {
         bot.telegram.sendMessage(idUsuario, "No hay IPs de respaldo 😥")
         return
     }
@@ -105,7 +105,11 @@ export const zoom = (bot, ctx) => {
             mensaje += `\n\n${URL_ZOOM}`
         }
 
-        bot.telegram.sendMessage(idUsuario, mensaje)
+        if (!cron) {
+            bot.telegram.sendMessage(idUsuario, mensaje)
+        } else {
+            destinatariosCron.forEach(destinatario => bot.telegram.sendMessage(destinatario, mensaje));
+        }
     })
 
 
