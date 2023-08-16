@@ -1,6 +1,7 @@
 import nodeCron from "node-cron"
 
 import { zoom } from "../commands/zoom.js"
+import { casino } from "../commands/casino.js"
 
 
 export const cargarCrons = (bot) => {
@@ -28,6 +29,29 @@ export const cargarCrons = (bot) => {
 
         usuarioCron.message.text = "/zoom"
         zoom(bot, usuarioCron, true, destinatariosCron);
+    })
+
+    nodeCron.schedule("30 9 * * *", () => {
+        const destinatariosCron = [USER_MASTER];
+
+        usuarioCron.message.text = "/casino"
+
+        casino(bot, usuarioCron, true, destinatariosCron);
+    })
+
+    nodeCron.schedule("0 10 * * *", () => {
+        const destinatariosCron = [USER_MASTER];
+
+        usuarioCron.message.text = "/casino"
+        casino(bot, usuarioCron, true, destinatariosCron);
+    })
+
+    nodeCron.schedule("30 10 * * *", () => {
+        const destinatariosCron = [USER_MASTER];
+
+        usuarioCron.message.text = "/casino"
+
+        casino(bot, usuarioCron, true, destinatariosCron);
     })
 
 }

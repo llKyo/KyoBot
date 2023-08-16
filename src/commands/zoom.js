@@ -70,7 +70,7 @@ export const zoom = (bot, ctx, cron = false, destinatariosCron = []) => {
 
     const aIpsZoom = obtenerIpsZoom(URL_ZOOM, bot, idUsuario)
 
-    aIpsZoom.then(async aIpsZoom => {
+    aIpsZoom.then(aIpsZoom => {
 
         const aCompara = compararIps(aIpsZoom, ULT_IPS_ZOOM)
 

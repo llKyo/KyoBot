@@ -21,7 +21,19 @@ export const casino = (bot, ctx, cron = false, destinatariosCron = []) => {
         const dom = new jsdom.JSDOM(res.data)
 
         let divCasaCentral = dom.window.document.querySelector("#casacentral")
-
+    
+           
+        if (divCasaCentral.getElementsByTagName("*").length == 0) {
+            bot.telegram.sendMessage(
+              usuario.id,
+              "Murició el caballero del casino"
+            );
+            bot.telegram.sendMessage(
+              usuario.id,
+              "😥"
+            );
+            return
+        }
         divCasaCentral = new jsdom.JSDOM(divCasaCentral.innerHTML)
 
         const periodo   = divCasaCentral.window.document.querySelector(".et_pb_blurb_description").firstElementChild.innerHTML
