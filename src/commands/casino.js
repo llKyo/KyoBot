@@ -5,9 +5,20 @@ import { conexionDB } from "../includes/sqlite3.js"
 import { MinutaCasino } from "../../database/classes/MinutaCasino.js"
 import { Usuario } from "../../database/classes/Usuario.js"
 
-export const casino = (bot, ctx, cron = false, destinatariosCron = []) => {
+export const casino = (bot, ctx, cron = false) => {
 
     generarLog(ctx)
+
+    const USER_MASTER = process.env.USER_MASTER;
+
+    const destinatariosCron = [
+        USER_MASTER,
+        6167462021,
+        1686140658,
+        6353702168,
+    ];
+
+    let enviado = false;
 
     const usuario = new Usuario()
     usuario.id = ctx.chat.id
@@ -44,20 +55,37 @@ export const casino = (bot, ctx, cron = false, destinatariosCron = []) => {
         minutaCasino.periodo = periodo
         minutaCasino.url = url
         minutaCasino.r_usuario = usuario.id
-
+        
+        const mensaje = `${periodo}\n\n${url}`
+        
         db.all(minutaCasino.siExisteURL(), (err, data) => {
             if (err) return
 
-            if (data[0]["COUNT(1)"] == 0) db.all(minutaCasino.registrar())
+            if (data[0]["COUNT(1)"] == 0) {
+                db.all(minutaCasino.registrar())
+
+                destinatariosCron.forEach(destinatario => {
+                    bot.telegram.sendMessage(destinatario, mensaje);
+                })
+                enviado = true
+            }
         })
-
-        const mensaje = `${periodo}\n\n${url}`
-
-        if (!cron) {
-            bot.telegram.sendMessage(usuario.id, mensaje)
-        } else {
-            destinatariosCron.forEach(destinatario => bot.telegram.sendMessage(destinatario, mensaje))
-        }
+        
+        
+        if (!enviado && !cron) {
+          bot.telegram.sendMessage(usuario.id, mensaje);
+        } 
         
     });
+}
+
+export const casinoCron = (bot, usuarioCron) => {
+    
+    
+    
+    // const destinatariosCron = [USER_MASTER, 6167462021, 1686140658];
+
+    usuarioCron.message.text = "/casino";
+
+    casino(bot, usuarioCron, true);
 }

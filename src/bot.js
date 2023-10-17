@@ -33,5 +33,5 @@ export const iniciarBot = () => {
 
     bot.launch().catch(err => console.log(err))
 
-    console.log("DONE! 🐤\n")
+    console.log("DONE! 🐤\n") 
 }
